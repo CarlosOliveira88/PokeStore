@@ -3,7 +3,7 @@
 
 PokéStore es una plataforma en línea que he desarrollado con el objetivo de crear un espacio donde los entrenadores de Pokémon (representando a empresas) puedan registrar y vender sus Pokémon, mientras que los clientes podrán explorar y comprar Pokémon para mejorar sus equipos.
 
-![Project Image]( https://www.nicepng.com/ourpic/u2q8e6i1o0r5r5i1_no-one-knows-if-people-eat-pokmon-png/ "Project Image")
+![Project Image]( /public/images/NicePng_pokemon-png-images_622961.png "Project Image")
 
 ## Deployment
 
