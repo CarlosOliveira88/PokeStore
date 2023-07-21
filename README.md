@@ -25,7 +25,7 @@ Este proyecto fue desarrollado individualmente, y utilicé [Trello](https://trel
 - Clonar este repositorio
 
 ```shell
-$ cd portfolio-back
+$ cd pokeStore
 $ npm install
 $ npm start
 ```
@@ -34,10 +34,11 @@ $ npm start
 #### User.model.js
 ```js
 const userSchema = new Schema({
-  username: { type: String, required: true },
+  username: { type: String,  unique: true, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+  cash: {type: Number, default: 1000}
+  Review: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   admin: Boolean,
 });
 ```
@@ -47,33 +48,18 @@ const pokemonSchema = new Schema({
   name: { type: String, unique: true, required: true },
   type: String,
   level: Number,
-  price: Number,
-  trainer: { type: Schema.Types.ObjectId, ref: "Trainer" },
+  price: { type: Number, required: true },
+  trainer: { type: Schema.Types.ObjectId, ref: "User" },
   image: String,
 });
 ```
-#### Trainer.model.js
+
+
+#### Review.model.js
 ```js
-const trainerSchema = new Schema({
-  name: { type: String, required: true },
-  description: String,
-  contact: String,
-});
-````
-#### Order.model.js
-```js
-const orderSchema = new Schema({
+const ReviewSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  modComment: {
-    type: String,
-    default: "Pendiente",
-  },
-  status: {
-    type: String,
-    enum: ["Aprobado", "Pendiente", "Denegado"],
-    default: "Pendiente",
-  },
 });
 ```
 ## User roles
