@@ -5,25 +5,26 @@ const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: false,
+      required: true,
       unique: true,
-      trim: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
-      trim: true,
-      lowercase: true,
     },
     password: {
       type: String,
       required: true,
     },
-  },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
-    timestamps: true,
+    cash: {
+      type: Number,
+      default: 100
+    },
+    pokemons: {
+      type: Schema.Types.ObjectId,
+      ref: "Pokemon",
+    },
   }
 );
 
