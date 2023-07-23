@@ -9,6 +9,10 @@ const pokemonSchema = new Schema({
         type: Number,
         default: 10,
         required: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
     }
 });
 

@@ -26,8 +26,7 @@ const session = require("express-session");
 const MongoStore = require("connect-mongo");
 
 // Connects the mongo uri to maintain the same naming structure
-const MONGO_URI =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/PokeStore";
+const MONGO_URI = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/PokeStore";
 
 // Middleware configuration
 module.exports = (app) => {
@@ -52,13 +51,30 @@ module.exports = (app) => {
   // );
 
   // ℹ️ Middleware that adds a "req.session" information and later to check that you are who you say you are 😅
+  // app.use(
+  //   session({
+  //     secret: process.env.SESSION_SECRET || "super hyper secret key",
+  //     resave: false,
+  //     saveUninitialized: false,
+  //     store: MongoStore.create({
+  //       mongoUrl: MONGO_URI,
+  //     }),
+  //   })
+  // );
+
+  app.set("trust proxy", 1);
   app.use(
     session({
       secret: process.env.SESSION_SECRET || "super hyper secret key",
       resave: false,
       saveUninitialized: false,
+      cookie: {
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+      },
       store: MongoStore.create({
-        mongoUrl: MONGO_URI,
+        mongoUrl: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/PokeStore",
       }),
     })
   );

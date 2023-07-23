@@ -2,23 +2,26 @@
 
     <h1>Editar Perfil <img src="/images/perfil.png" alt="perfil" class="img-small"></h1>
 
-    <form class="profileForm">
+    <form class="profileForm" action="/user/edit/{{_id}}" method="POST">
+
         <label for="nameInput">Name:</label>
-        <input type="text" id="nameInput" name="name"><br>
+        <input type="text" id="nameInput" name="name" value="{{username}}"><br>
 
         <label for="userInput">User:</label>
-        <input type="text" id="userInput" name="user"><br>
+        <input type="text" id="userInput" name="user" value="@{{username}}"><br>
 
         <label for="emailInput">E-mail:</label>
-        <input type="email" id="emailInput" name="email"><br>
+        <input type="email" id="emailInput" name="email" value="{{username}}@gmail.com"><br>
 
         <label for="teamInput">Team:</label>
-        <input type="text" id="teamInput" name="team"><br>
+        <input type="text" id="teamInput" name="team" value="Blue"><br>
 
-        <label for="cashInput">Cash:</label>
-        <input type="tel" id="cashInput" name="cash"><br>
 
-        <a href="/user/profile" class="btn btn-primary"> Guardar cambios</a>
+        {{!-- <label for="cashInput">Cash:</label>
+        <input type="tel" id="cashInput" name="cash"><br> --}}
+
+        <button type="submit">Guardar cambios</button>
+
     </form>
 
 </div>

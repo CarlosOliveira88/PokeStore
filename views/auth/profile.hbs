@@ -1,0 +1,14 @@
+Vista para mostrar el perfil del usuario actual.
+
+<div class="profile-container">
+    <h1>Perfil de Usuario</h1>
+
+    <img src="/images/perfil.png" alt="image de perfil" id="profileImg">
+    <p><strong>Name:</strong> <span id="nombre">{{name}}</span></p>
+    <p><strong>User:</strong> <span id="User">@{{username}}</span></p>
+    <p><strong>E-mail:</strong> <span id="email">{{email}}</span></p>
+    <p><strong>Team:</strong> <span id="team">{{team}}</span></p>
+    <p><strong>Cash:</strong> <span id="Cash">$ {{cash}}</span></p>
+
+    <a href="/user/edit/{{_id}}" class="btn btn-primary"> Editar Perfil</a>
+</div>

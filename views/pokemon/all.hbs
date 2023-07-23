@@ -12,5 +12,5 @@ Vista para mostrar todos los Pokémon disponibles en la tienda.
 
 {{#each pokemons.results}}
 <h4>{{this.name}}</h4>
-<a href="{{this.url}}">ver mas</a>
+<a href="/pokemon/all/:pokemon?search={{this.name}}">ver mas</a>
 {{/each}}
