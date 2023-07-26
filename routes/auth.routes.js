@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 const User = require("../models/User.model");
+const Pokemon = require("../models/Pokemon.model");
+
 
 const isLoggedIn = require("../middleware/isLoggedIn");
 const isLoggedOut = require("../middleware/isLoggedOut");
@@ -37,6 +39,7 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
   User.find({ username })
     .then((result) => {
       if (result.length != 0) {
+        console.log("RESULT.LENGTH =! 0");
         res.render("auth/signup", {
           errorMessage:
             "El usuario ya existe, por favor elija otro.",
@@ -49,6 +52,9 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
 
       User.create({
         username,
+        name: username,
+        email: username + "@gmail.com",
+        team: "azul",
         password: passwordEncriptada
       })
         .then(() => {
@@ -75,7 +81,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
   User.find({ username })
     .then((result) => {
 
-      if (result.length == 0) {
+      if (result.length == 0) { // hay un error aqui 
         res.render("auth/login", {
           errorMessage: "El usuario no existe, por favor regístrate.",
         });
@@ -83,9 +89,11 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 
       if (bcrypt.compareSync(password, result[0].password)) {
         let usuario = {
+          _id: result[0]._id,
           username: result[0].username,
           admin: result[0].admin,
         };
+        console.log('usuario: ' + JSON.stringify(usuario));
 
         req.session.currentUser = usuario;
         res.redirect("/auth/profile");
@@ -101,18 +109,38 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 });
 
 // Perfil
-router.get("/profile", isLoggedIn, (req, res, next) => {
+// router.get("/profile", isLoggedIn, (req, res, next) => {
 
-  User.find({ username: req.session.currentUser.username })
-    .then((user) => {
-      console.log("user = " + user[0])
-      res.render("auth/profile", user[0]);
-    })
-    .catch((err) => next(err));
+//   User.find({ username: req.session.currentUser.username })
+//     .then((user) => {
+//       console.log("user joao = " + user[0].pokemons)
+//       res.render("auth/profile", user[0]);
+//     })
+//     .catch((err) => next(err));
 
-});
+// });
 
 // logout
+
+router.get("/profile", isLoggedIn, (req, res, next) => {
+  User.find({ username: req.session.currentUser.username })
+    .then(async (user) => {
+      console.log("user joao = " + user[0])
+      let pokemonIds = user[0].pokemons;
+      // Uso Promise.all para buscar cada Pokémon por su ID
+      const pokemonPromises = pokemonIds.map(pokemonId => Pokemon.findById(pokemonId));
+      // Espero a que todas las búsquedas de Pokémon sean completadas
+      const foundPokemons = await Promise.all(pokemonPromises);
+      // Ahora, foundPokemons contendrá un array con todos los Pokémon encontrados
+      // Mapeamos los nombres de los Pokémon encontrados
+      const pokemonNames = foundPokemons.map(pokemon => pokemon.name);
+      // Renderizamos la vista con los datos del usuario y los nombres de los Pokémon
+      res.render("auth/profile", { user: user[0], pokemonNames });
+    })
+    .catch((err) => next(err));
+});
+
+
 router.get("/logout", isLoggedIn, (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {

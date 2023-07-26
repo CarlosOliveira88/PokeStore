@@ -1,1 +1,24 @@
-Vista para el formulario de edición de un Pokémon existente.
+<h1>Editar Pokémon</h1>
+<form id="pokemonForm" action="/pokemon/edit/{{pokemon._id}}" method="POST">
+    <label for="name">Nombre:</label>
+    <input type="text" id="name" name="name" value="{{pokemon.name}}">
+    <br>
+
+    <label for="abilities">Habilidades (separadas por comas):</label>
+    <input type="text" id="abilities" name="abilities" value="{{pokemon.abilities}}">
+    <br>
+
+    <label for="types">Tipos (separados por comas):</label>
+    <input type="text" id="types" name="types" value="{{pokemon.types}}">
+    <br>
+
+    <label for="imagen">URL de la imagen:</label>
+    <input type="text" id="imagen" name="imagen" value="{{pokemon.imagen}}">
+    <br>
+
+    <label for="price">Precio:</label>
+    <input type="number" id="price" name="price" value="{{pokemon.price}}">
+    <br>
+
+    <button type="submit">Guardar Pokémon</button>
+</form>

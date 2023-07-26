@@ -5,7 +5,6 @@ const userSchema = new Schema(
   {
     name: {
       type: String,
-
     },
     username: {
       type: String,
@@ -14,7 +13,7 @@ const userSchema = new Schema(
     },
     email: {
       type: String,
-      unique: true,
+
     },
     password: {
       type: String,
@@ -24,11 +23,14 @@ const userSchema = new Schema(
       type: Number,
       default: 100
     },
-    pokemons: {
+    pokemons: [{
       type: Schema.Types.ObjectId,
       ref: "Pokemon",
-    },
+    }],
     team: String
+  },
+  {
+    timestamps: true
   }
 );
 

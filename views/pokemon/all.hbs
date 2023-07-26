@@ -10,7 +10,11 @@ Vista para mostrar todos los Pokémon disponibles en la tienda.
     </form>
 </div>
 
-{{#each pokemons.results}}
-<h4>{{this.name}}</h4>
-<a href="/pokemon/all/:pokemon?search={{this.name}}">ver mas</a>
-{{/each}}
+<div class="allPokemons">
+    {{#each pokemons.results}}
+    <div class="listPoke">
+        <h4>{{this.name}}</h4>
+        <a href="/pokemon/all/:pokemon?search={{this.name}}">ver mas</a>
+    </div>
+    {{/each}}
+</div>

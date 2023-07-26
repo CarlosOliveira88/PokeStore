@@ -89,6 +89,34 @@ a {
 
 }
 
+/* -----------------------------------------all pokemons ------------------------------------------ */
+.allPokemons {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit,
+      minmax(150px, 1fr));
+  gap: 32px;
+}
+
+.listPoke {
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0px 0px 0px 1px black;
+  text-align: center;
+  padding: 5px;
+}
+
+.listPoke h4 {
+  margin: 0px;
+  color: blueviolet;
+}
+
+.pokemonDetail {
+  width: 150px;
+
+}
+
 /* ----------------------------------------para telas menores de 1000 px -------------------------- */
 @media (max-width: 900px) {
 

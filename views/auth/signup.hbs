@@ -1,4 +1,4 @@
-<form action="/auth/login" method="POST">
+<form action="/auth/signup" method="POST">
 
   <div class="cajaLogin">
     <h1 class="h1Text">SIGN UP</h1>
@@ -20,6 +20,11 @@
       <input type="text" class="form-control" aria-label="Sizing example input"
         aria-describedby="inputGroup-sizing-default" placeholder="Username" name="username">
     </div>
+    {{!-- <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default">@</span>
+      <input type="text" class="form-control" aria-label="Sizing example input"
+        aria-describedby="inputGroup-sizing-default" placeholder="email" name="email">
+    </div> --}}
 
     <div class="input-group mb-3">
       <span class="input-group-text" id="inputGroup-sizing-default">
@@ -49,7 +54,7 @@
         aria-describedby="inputGroup-sizing-default" placeholder="Repeat password" name="passwordRepeat">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
-    <a href="/auth/login" class="btn btn-info">login</a>
+    {{!-- <a href="/auth/login" class="btn btn-info">login</a> --}}
     <img src="/images/pokeGrupo.png" alt="Grupo pokemon" id="pokeGrupo">
   </div>
 

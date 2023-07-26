@@ -1,0 +1,21 @@
+<h1>{{pokemon.name}}</h1>
+<img src="{{pokemon.imagen}}" alt="{{pokemon.name}}" class="pokemonDetail" />
+
+<h2>Abilities:</h2>
+<ul>
+    {{#each pokemon.abilities}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+
+
+<h2>Types:</h2>
+<ul>
+    {{#each pokemon.types}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul>
+
+<p>Price: ${{pokemon.price}}</p>
+
+<a href="/pokemon/edit/{{pokemon._id}}">editar</a>
