@@ -12,25 +12,25 @@ const Pokemon = require("../models/Pokemon.model");
 
 
 
-router.get("/all", isLoggedIn, (req, res, next) => {
+router.get("/pokedex", isLoggedIn, (req, res, next) => {
 
     axios
         .get(`https://pokeapi.co/api/v2/pokemon?limit=1281`)
         .then((pokemons) => {
             console.log("pokemons.data " + pokemons.data.results[0])
-            res.render("pokemon/all", { pokemons: pokemons.data });
+            res.render("pokemon/pokedex", { pokemons: pokemons.data });
         })
         .catch((err) => next(err));
 
 })
 
-router.get("/all/:pokemon", isLoggedIn, (req, res, next) => {
+router.get("/pokedex/:pokemon", isLoggedIn, (req, res, next) => {
     console.log("req.query = " + req.query);
 
     axios
         .get(`https://pokeapi.co/api/v2/pokemon/${req.query.search}/`)
         .then((pokemon) => {
-            res.render("pokemon/details", { pokemon: pokemon.data });
+            res.render("pokemon/pokedexDetails", { pokemon: pokemon.data });
         })
         .catch((err) => next(err));
 });
@@ -44,7 +44,16 @@ router.get("/all/all/:pokemon", isLoggedIn, (req, res, next) => {
             .findById({ _id: req.params.pokemon })
             .then((pokemon) => {
                 console.log("pokemon.namePokemoID = " + pokemon)
-                res.render("pokemon/pokemonDetails", { pokemon });
+
+
+                User.findById(pokemon.user)
+                    .then((name) => {
+                        let userName = name
+                        console.log("user ======= >>>>>>>>>" + userName)
+                        res.render("pokemon/pokemonDetails", { pokemon, userName });
+                    })
+                    .catch((err) => next(err));
+
             })
             .catch((err) => next(err));
     } else {
@@ -52,6 +61,7 @@ router.get("/all/all/:pokemon", isLoggedIn, (req, res, next) => {
             .find({ name: req.query.search })
             .then((pokemon) => {
                 console.log("pokemon.name = " + pokemon[0])
+
                 res.render("pokemon/pokemonDetails", { pokemon: pokemon[0] });
             })
             .catch((err) => next(err));
@@ -80,23 +90,6 @@ router.post("/create", isLoggedIn, (req, res, next) => {
     });
     console.log("new pokemon = " + newPokemon)
 
-    // newPokemon.save()
-    //     .then((savedPokemon) => {
-    //         console.log("savedPokemon = " + savedPokemon)
-    //         return User.findByIdAndUpdate(userID, { $push: { pokemons: { _id: savedPokemon._id, name: savedPokemon.name } } }, { new: true });
-    //     })
-    //     .then((updatedUser) => {
-
-    //         console.log("Pokemon guardado y usuario actualizado:", updatedUser);
-    //     })
-    //     .then(() => {
-    //         res.redirect("/auth/profile");
-    //     })
-    //     .catch((error) => {
-    //         console.error('Erro ao criar o Pokémon:', error);
-    //         res.render("pokemon/create", { errorMessage: "Erro ao criar o Pokémon." });
-    //     });
-
     newPokemon.save()
         .then((savedPokemon) => {
             return User.findByIdAndUpdate(
@@ -116,7 +109,7 @@ router.post("/create", isLoggedIn, (req, res, next) => {
 
 });
 
-router.get("/edit/:id", isLoggedIn, (req, res, next) => {
+router.get("/edit/:id", isLoggedIn, admin, (req, res, next) => {
 
     Pokemon.findById(req.params.id)
         .then((pokemon) => {
@@ -129,7 +122,7 @@ router.get("/edit/:id", isLoggedIn, (req, res, next) => {
         });
 });
 
-router.post("/edit/:id", isLoggedIn, (req, res, next) => {
+router.post("/edit/:id", isLoggedIn, admin, (req, res, next) => {
     let { name, abilities, types, imagen, price } = req.body;
     let { id } = req.params;
 
@@ -148,6 +141,29 @@ router.post("/edit/:id", isLoggedIn, (req, res, next) => {
 
 router.get("/details", isLoggedIn, (req, res, next) => {
     res.render("pokemon/details");
+});
+
+router.get("/users/pokemons", isLoggedIn, (req, res, next) => {
+    Pokemon.find()
+        .then((arrayPokemon) => {
+
+            const pokemons = arrayPokemon.map((pokemon) => {
+                return {
+                    _id: pokemon._id,
+                    name: pokemon.name,
+                    imagen: pokemon.imagen,
+                    price: pokemon.price
+                };
+            });
+            console.log("poquemons array === " + pokemons[0].name)
+            res.render("pokemon/userPokemon", { pokemons });
+        })
+        .catch((error) => {
+            console.error('Error al obtener la lista de Pokémon:', error);
+            res.render("pokemon/userPokemon", { errorMessage: "Error al obtener la lista de Pokémon." });
+        });
+
+
 });
 
 module.exports = router;

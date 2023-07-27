@@ -1,21 +1,26 @@
-<h1>{{pokemon.name}}</h1>
-<img src="{{pokemon.imagen}}" alt="{{pokemon.name}}" class="pokemonDetail" />
+<div class="detailPokemon">
+    <h1>{{pokemon.name}}</h1>
+    <img src="{{pokemon.imagen}}" alt="{{pokemon.name}}" class="pokemonDetail" />
 
-<h2>Abilities:</h2>
-<ul>
-    {{#each pokemon.abilities}}
-    <li>{{this}}</li>
-    {{/each}}
-</ul>
+    <h2>Abilities:</h2>
+    <ul>
+        {{#each pokemon.abilities}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
 
 
-<h2>Types:</h2>
-<ul>
-    {{#each pokemon.types}}
-    <li>{{this}}</li>
-    {{/each}}
-</ul>
+    <h2>Types:</h2>
+    <ul>
+        {{#each pokemon.types}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+    <p>User: {{userName.username}}</p>
 
-<p>Price: ${{pokemon.price}}</p>
+    <p>Price: ${{pokemon.price}}</p>
 
-<a href="/pokemon/edit/{{pokemon._id}}">editar</a>
+    <a href="/pokemon/edit/{{pokemon._id}}" class="btn btn-secondary">editar</a>
+
+    <a href="/pokemon/edit/{{pokemon._id}}" class="btn btn-danger">Deletar</a>
+</div>

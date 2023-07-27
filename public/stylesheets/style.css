@@ -58,7 +58,7 @@ a {
 }
 
 #pokeGrupo {
-  width: 22vw;
+  width: 277px;
   display: block;
   /* margin-left: 3vw; */
   margin-top: 2px;
@@ -96,6 +96,8 @@ a {
     repeat(auto-fit,
       minmax(150px, 1fr));
   gap: 32px;
+  margin-top: 1vw;
+  margin: 16px;
 }
 
 .listPoke {
@@ -114,22 +116,76 @@ a {
 
 .pokemonDetail {
   width: 150px;
+}
+
+.detailPokemon {
+  margin: 10px 3px 10px 5vw;
+  padding: 3px 30px 30px 50px;
+  width: 300px;
+  background-color: #94ddfaa1;
+  border: 3px solid rgb(29, 29, 31);
 
 }
 
 /* ----------------------------------------para telas menores de 1000 px -------------------------- */
-@media (max-width: 900px) {
+@media (max-width: 800px) {
+
+  #indexPokemons {
+    display: flex;
+    justify-content: space-around;
+    width: 89vw;
+    text-align: center;
+    max-width: 100%;
+    max-height: 100%;
+    margin-top: -1vw;
+  }
+
+  .title {
+    position: absolute;
+    left: 61px;
+    text-align: center;
+    background-color: rgba(251, 253, 255, 0.685);
+    padding: 3%;
+    border: 3px solid rgb(34, 34, 97);
+    color: rgb(34, 34, 97);
+    margin-top: -28vw;
+  }
 
   /* ------------------------------------------------------login-------------------------------------- */
   .cajaLogin {
     background-color: rgba(100, 184, 100, 0.592);
-    width: 250px;
-    height: 300px;
-    margin-left: 15vw;
+    width: 365px;
+    height: 400px;
+    margin-left: 5vw;
     border: 3px solid black;
     padding: 10px;
     text-align: center;
     align-items: center;
+  }
+
+  #pokeGrupo {
+    width: 271px;
+    display: block;
+    margin-left: 9vw;
+    margin-top: 2px;
+  }
+
+  .profile-container {
+    width: 88vw;
+    padding: 10px;
+    margin-left: 5%;
+    border: 3px solid black;
+    background-color: #00ffb1;
+    font-size: 25px;
+  }
+
+  .detailPokemon {
+    margin: 10px 3px 10px 5vw;
+    padding: 3px 20px 20px 50px;
+    width: 365px;
+    background-color: #94ddfaa1;
+    border: 3px solid rgb(29, 29, 31);
+    font-size: 26px;
   }
 
   /* ------------------------------------------------------Profile-------------------------------------- */

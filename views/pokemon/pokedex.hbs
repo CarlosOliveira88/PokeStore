@@ -1,7 +1,7 @@
 Vista para mostrar todos los Pokémon disponibles en la tienda.
 
 <div class="container my-5">
-    <form action="/pokemon/all/:pokemon" method="GET">
+    <form action="/pokemon/pokedex/:pokemon" method="GET">
         <div class="mb-3">
             <label for="pokemon" class="form-label">Pokémon</label>
             <input id="pokemon" type="text" class="form-control" name="search" />
@@ -14,7 +14,7 @@ Vista para mostrar todos los Pokémon disponibles en la tienda.
     {{#each pokemons.results}}
     <div class="listPoke">
         <h4>{{this.name}}</h4>
-        <a href="/pokemon/all/:pokemon?search={{this.name}}">ver mas</a>
+        <a href="/pokemon/pokedex/:pokemon?search={{this.name}}">ver mas</a>
     </div>
     {{/each}}
 </div>

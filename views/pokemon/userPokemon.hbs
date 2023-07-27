@@ -1,0 +1,23 @@
+<h1>Pokemons en venta</h1>
+<br>
+<h3>Lista de Pokémon</h3>
+
+<a href="/pokemon/create/{{this._id}}" class="btn btn-success">Crear</a>
+<br>
+{{#if pokemons.length}}
+
+<div class="allPokemons">
+    {{#each pokemons}}
+    <div class="listPoke">
+        <p> <strong> {{this.name}}</strong></p>
+        <img src="{{this.imagen}}" alt="{{this.name}}" class="pokemonDetail">
+        <p><strong style="color: rgb(28, 236, 32);">$ {{this.price}}</strong></p>
+        <a href="/pokemon/all/all/{{this._id}}" class="btn btn-info">ver mas</a>
+        {{!-- <p>ID: {{this._id}}</p> --}}
+    </div>
+    {{/each}}
+
+    {{else}}
+    <p>No hay Pokémon en la lista.</p>
+    {{/if}}
+</div>

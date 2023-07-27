@@ -108,20 +108,6 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     .catch((err) => next(err));
 });
 
-// Perfil
-// router.get("/profile", isLoggedIn, (req, res, next) => {
-
-//   User.find({ username: req.session.currentUser.username })
-//     .then((user) => {
-//       console.log("user joao = " + user[0].pokemons)
-//       res.render("auth/profile", user[0]);
-//     })
-//     .catch((err) => next(err));
-
-// });
-
-// logout
-
 router.get("/profile", isLoggedIn, (req, res, next) => {
   User.find({ username: req.session.currentUser.username })
     .then(async (user) => {
@@ -140,7 +126,7 @@ router.get("/profile", isLoggedIn, (req, res, next) => {
     .catch((err) => next(err));
 });
 
-
+// logout
 router.get("/logout", isLoggedIn, (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {

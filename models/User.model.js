@@ -27,7 +27,8 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Pokemon",
     }],
-    team: String
+    team: String,
+    admin: Boolean,
   },
   {
     timestamps: true
