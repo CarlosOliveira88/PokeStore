@@ -17,7 +17,7 @@ router.get("/pokedex", isLoggedIn, (req, res, next) => {
     axios
         .get(`https://pokeapi.co/api/v2/pokemon?limit=1281`)
         .then((pokemons) => {
-            console.log("pokemons.data " + pokemons.data.results[0])
+            // console.log("pokemons.data " + pokemons.data.results[0])
             res.render("pokemon/pokedex", { pokemons: pokemons.data });
         })
         .catch((err) => next(err));
@@ -25,7 +25,7 @@ router.get("/pokedex", isLoggedIn, (req, res, next) => {
 })
 
 router.get("/pokedex/:pokemon", isLoggedIn, (req, res, next) => {
-    console.log("req.query = " + req.query);
+    // console.log("req.query = " + req.query);
 
     axios
         .get(`https://pokeapi.co/api/v2/pokemon/${req.query.search}/`)
@@ -36,23 +36,25 @@ router.get("/pokedex/:pokemon", isLoggedIn, (req, res, next) => {
 });
 
 router.get("/all/all/:pokemon", isLoggedIn, (req, res, next) => {
-
+    let session = req.session.currentUser._id
+    let autor = false;
 
     if (req.query.search == undefined) {
 
         Pokemon
             .findById({ _id: req.params.pokemon })
+            .populate("user")
             .then((pokemon) => {
-                console.log("pokemon.namePokemoID = " + pokemon)
 
 
-                User.findById(pokemon.user)
-                    .then((name) => {
-                        let userName = name
-                        console.log("user ======= >>>>>>>>>" + userName)
-                        res.render("pokemon/pokemonDetails", { pokemon, userName });
-                    })
-                    .catch((err) => next(err));
+                if (pokemon.user._id == session) {
+                    autor = true
+                }
+
+                console.log("session 1 ===== >>> " + session)
+                console.log("pokemon.user._id y autor ===== >>> " + pokemon.user._id + " y " + autor)
+                res.render("pokemon/pokemonDetails", { pokemon, autor });
+
 
             })
             .catch((err) => next(err));
@@ -60,14 +62,20 @@ router.get("/all/all/:pokemon", isLoggedIn, (req, res, next) => {
         Pokemon
             .find({ name: req.query.search })
             .then((pokemon) => {
-                console.log("pokemon.name = " + pokemon[0])
 
-                res.render("pokemon/pokemonDetails", { pokemon: pokemon[0] });
+                if (pokemon[0].user._id == session) {
+                    autor = true
+                }
+
+                console.log("session 2 ===== >>> " + session)
+                console.log("autor 4 ===== >>> " + autor)
+                console.log("pokemon  search ========= " + pokemon[0])
+                res.render("pokemon/pokemonDetails", { pokemon: pokemon[0], autor });
             })
             .catch((err) => next(err));
     }
 
-    console.log("req.query.search = " + req.query.search)
+    // console.log("req.query.search = " + req.query.search)
 
 });
 
@@ -88,7 +96,7 @@ router.post("/create", isLoggedIn, (req, res, next) => {
         price: parseFloat(price),
         user: userID,
     });
-    console.log("new pokemon = " + newPokemon)
+
 
     newPokemon.save()
         .then((savedPokemon) => {
@@ -99,11 +107,11 @@ router.post("/create", isLoggedIn, (req, res, next) => {
             );
         })
         .then((updatedUser) => {
-            console.log("Pokemon guardado y usuario actualizado:", updatedUser);
+            // console.log("Pokemon guardado y usuario actualizado:", updatedUser);
             res.redirect("/auth/profile");
         })
         .catch((error) => {
-            console.error('Error al crear el Pokémon:', error);
+            // console.error('Error al crear el Pokémon:', error);
             res.render("pokemon/create", { errorMessage: "Error al crear el Pokémon." });
         });
 
@@ -113,11 +121,11 @@ router.get("/edit/:id", isLoggedIn, admin, (req, res, next) => {
 
     Pokemon.findById(req.params.id)
         .then((pokemon) => {
-            console.log("resp pokemon ========================" + pokemon);
+            // console.log("resp pokemon ========================" + pokemon);
             res.render("pokemon/edit", { pokemon });
         })
         .catch((error) => {
-            console.error('Error al editar el Pokémon:', error);
+            // console.error('Error al editar el Pokémon:', error);
             res.render("pokemon/edit", { errorMessage: "Error al editar el Pokémon." });
         });
 });
@@ -130,11 +138,11 @@ router.post("/edit/:id", isLoggedIn, admin, (req, res, next) => {
 
     Pokemon.findOneAndUpdate({ _id: id }, EditPokemon, { new: true })
         .then((pokemonEdit) => {
-            console.log("pokemon editado ==================== " + pokemonEdit)
+            // console.log("pokemon editado ==================== " + pokemonEdit)
             res.redirect(`/pokemon//all/all/${id}`)
         })
         .catch((error) => {
-            console.error('Error al editar el Pokémon:', error);
+            // console.error('Error al editar el Pokémon:', error);
             res.render("pokemon/edit", { errorMessage: "Error al editar el Pokémon." });
         });
 });
@@ -155,15 +163,83 @@ router.get("/users/pokemons", isLoggedIn, (req, res, next) => {
                     price: pokemon.price
                 };
             });
-            console.log("poquemons array === " + pokemons[0].name)
+            // console.log("poquemons array === " + pokemons[0].name)
             res.render("pokemon/userPokemon", { pokemons });
         })
         .catch((error) => {
-            console.error('Error al obtener la lista de Pokémon:', error);
+            // console.error('Error al obtener la lista de Pokémon:', error);
             res.render("pokemon/userPokemon", { errorMessage: "Error al obtener la lista de Pokémon." });
         });
 
 
 });
 
+router.get("/buy/:pokemonId/:ownerId", isLoggedIn, (req, res, next) => {
+    let idPropietario = req.params.ownerId;
+    let idPokemon = req.params.pokemonId;
+    let pokemon;
+
+    let dinero = req.session.currentUser.cash
+    if (dinero < 0) {
+        res.send("No tienes suficiente dinero para esta compra")
+    }
+
+    Pokemon.findById(idPokemon)
+        .then((result) => {
+            pokemon = result;
+            return User.findById(idPropietario)
+        }).then((userDueño) => {
+            console.log(" userDueño antes ========================" + userDueño);
+            // actualizo el dinero del dueño
+            userDueño.cash = userDueño.cash + pokemon.price;
+
+            // quito el pokemon del array
+            userDueño.pokemons = userDueño.pokemons.filter((pokemon) => { return pokemon._id != idPokemon });
+
+
+            console.log("userDueño despues ========================" + userDueño);
+            return User.findByIdAndUpdate(idPropietario, { pokemons: userDueño.pokemons, cash: userDueño.cash }, { new: true })
+
+
+        })
+        .then((propietarioActualizado) => {
+            console.log("Propietario actualizado en BBDD: ", propietarioActualizado);
+            return User.findById(req.session.currentUser._id)
+        })
+        .then((buyer) => {
+            console.log("buyer =========>>" + buyer)
+            console.log("let pokemon =========>>" + pokemon)
+
+
+            buyer.cash = buyer.cash - pokemon.price;
+
+            buyer.pokemons.push(idPokemon);
+            console.log("buyer 2 =========>>" + buyer)
+            return User.findByIdAndUpdate(buyer._id, { pokemons: buyer.pokemons, cash: buyer.cash }, { new: true })
+                .then((updatedBuyer) => {
+                    console.log(updatedBuyer);
+                    console.log("Current User antes de update:", req.session.currentUser)
+                    req.session.currentUser.pokemons = updatedBuyer.pokemons;
+                    console.log("Current User después de update:", req.session.currentUser)
+                    res.redirect("/auth/profile")
+                })
+        })
+        .then(() => {
+            return Pokemon.findByIdAndUpdate(idPokemon, { user: req.session.currentUser }, { new: true })
+        })
+        .then((pokemon) => {
+            console.log("user actualizado  " + pokemon);
+
+        })
+        .catch((error) => {
+            console.error('Error al comprar el Pokémon:', error);
+            // res.render("pokemon/edit", { errorMessage: "Error al editar el Pokémon." });
+        });
+});
+
+
+router.get("/delete/:id", (req, res, next) => {
+    Pokemon.findByIdAndDelete
+
+})
 module.exports = router;

@@ -16,11 +16,17 @@
         <li>{{this}}</li>
         {{/each}}
     </ul>
-    <p>User: {{userName.username}}</p>
+    <p>Propietario: {{pokemon.user.username}}</p>
 
     <p>Price: ${{pokemon.price}}</p>
 
-    <a href="/pokemon/edit/{{pokemon._id}}" class="btn btn-secondary">editar</a>
-
+    {{#if autor}}
+    <a href="/pokemon/edit/{{pokemon._id}}" class="btn btn-secondary">Editar</a>
     <a href="/pokemon/edit/{{pokemon._id}}" class="btn btn-danger">Deletar</a>
+    {{else}}
+    <a href="/pokemon/buy/{{pokemon._id}}/{{pokemon.user._id}}" class="btn btn-success">Comprar</a>
+    {{/if}}
+    {{#if errorMessage}}
+    <br><span style='color:#ff0000'>{{errorMessage}}</span>
+    {{/if}}
 </div>

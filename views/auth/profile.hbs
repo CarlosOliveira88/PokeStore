@@ -11,8 +11,8 @@ Vista para mostrar el perfil del usuario actual.
     <p><strong>Cash:</strong> <span id="Cash">$ {{user.cash}}</span></p>
     <p><strong>Pokemons:</strong> <span id="pokemons">
             <ul>
-                {{#each pokemonNames}}
-                <li><a href="/pokemon/all/all/:pokemon?search={{this}}">{{this}}</a></li>
+                {{#each user.pokemons}}
+                <li><a href="/pokemon/all/all/:pokemon?search={{this.name}}">{{this.name}}</a></li>
                 {{/each}}
             </ul>
         </span></p>

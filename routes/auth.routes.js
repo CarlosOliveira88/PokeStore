@@ -107,21 +107,17 @@ router.post("/login", isLoggedOut, (req, res, next) => {
     })
     .catch((err) => next(err));
 });
-
+// perfil
 router.get("/profile", isLoggedIn, (req, res, next) => {
-  User.find({ username: req.session.currentUser.username })
-    .then(async (user) => {
-      console.log("user joao = " + user[0])
-      let pokemonIds = user[0].pokemons;
-      // Uso Promise.all para buscar cada Pokémon por su ID
-      const pokemonPromises = pokemonIds.map(pokemonId => Pokemon.findById(pokemonId));
-      // Espero a que todas las búsquedas de Pokémon sean completadas
-      const foundPokemons = await Promise.all(pokemonPromises);
-      // Ahora, foundPokemons contendrá un array con todos los Pokémon encontrados
-      // Mapeamos los nombres de los Pokémon encontrados
-      const pokemonNames = foundPokemons.map(pokemon => pokemon.name);
-      // Renderizamos la vista con los datos del usuario y los nombres de los Pokémon
-      res.render("auth/profile", { user: user[0], pokemonNames });
+  User.findById(req.session.currentUser._id)
+    .populate("pokemons")
+    .then((user) => {
+      console.log("user perfil = " + user)
+      // let pokemonIds = user.pokemons;
+      // console.log("pokemonIds =====>>> " + pokemonIds[0].name)
+
+
+      res.render("auth/profile", { user });
     })
     .catch((err) => next(err));
 });

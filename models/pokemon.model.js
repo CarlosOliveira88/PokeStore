@@ -21,6 +21,6 @@ const pokemonSchema = new Schema({
 
 
 
-const Pokemon = model("pokemon", pokemonSchema);
+const Pokemon = model("Pokemon", pokemonSchema);
 
 module.exports = Pokemon;
