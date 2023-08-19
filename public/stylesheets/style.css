@@ -7,6 +7,8 @@ a {
   color: #00b7ff;
 }
 
+
+
 /* ----------------------------------------Pagina Inicial-------------------------- */
 .title {
   /* color: 15px; */
@@ -125,6 +127,19 @@ a {
   background-color: #94ddfaa1;
   border: 3px solid rgb(29, 29, 31);
 
+}
+
+/* ----------------------------------------conmentarios -------------------------- */
+.conmentarioADD {
+  width: 300px;
+  background-color: #4feebe;
+  padding: 10px;
+  border: solid 3px black;
+  margin-left: 40%;
+}
+
+.coment {
+  width: 100%;
 }
 
 /* ----------------------------------------para telas menores de 1000 px -------------------------- */

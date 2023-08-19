@@ -29,6 +29,17 @@ router.post('/edit/:id', isLoggedIn, (req, res, next) => {
         });
 });
 
+router.get('/delete/:id', (req, res, next) => {
+    const userId = req.params.id;
 
+    User.findByIdAndDelete(userId)
+        .then(() => {
+            res.redirect("/auth/logout");
+        })
+        .catch((error) => {
+            console.error('Error al eliminar el usuario:', error);
+            res.redirect('/auth/profile');
+        });
+});
 
 module.exports = router;

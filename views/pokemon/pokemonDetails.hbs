@@ -22,7 +22,7 @@
 
     {{#if autor}}
     <a href="/pokemon/edit/{{pokemon._id}}" class="btn btn-secondary">Editar</a>
-    <a href="/pokemon/edit/{{pokemon._id}}" class="btn btn-danger">Deletar</a>
+    <a href="/pokemon/delete/{{pokemon._id}}" class="btn btn-danger">Deletar</a>
     {{else}}
     <a href="/pokemon/buy/{{pokemon._id}}/{{pokemon.user._id}}" class="btn btn-success">Comprar</a>
     {{/if}}

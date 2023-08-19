@@ -1,5 +1,3 @@
-Vista para mostrar el perfil del usuario actual.
-
 <div class="profile-container">
     <h1>Perfil de Usuario</h1>
 
@@ -18,8 +16,7 @@ Vista para mostrar el perfil del usuario actual.
         </span></p>
 
 
-    <a href="/user/edit/{{_id}}" class="btn btn-primary"> Editar Perfil</a>
-    <a class="btn btn-danger" href="/user/delete
-    ">Deletar Perfil</a>
+    <a href="/user/edit/{{user._id}}" class="btn btn-primary"> Editar Perfil</a>
+    <a href="/user/delete/{{user._id}}" class="btn btn-danger">Deletar Perfil</a>
 
 </div>

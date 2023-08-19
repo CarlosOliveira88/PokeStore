@@ -46,36 +46,19 @@
             <a class="nav-link" href="/pokemon/users/pokemons"> Pokemons en venta</a>
           </li>
 
-
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Review
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/review/all">Todos</a></li>
-              <li><a class="dropdown-item" href="/review/create">Crear</a></li>
-              <li><a class="dropdown-item" href="/review/edit">Editar</a></li>
-              <li><a class="dropdown-item" href="/review/details">Detalles</a></li>
-            </ul>
+          <li class="nav-item">
+            <a class="nav-link" href="/auth/logout"> logout</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Usuario
-            </a>
-            <ul class="dropdown-menu">
 
-              <li><a class="dropdown-item" href="/auth/profile">Perfil</a></li>
-              <li><a class="dropdown-item" href="/auth/logout">logout</a></li>
-            </ul>
-          </li>
+
+
         </ul>
 
 
-        {{#if name}}
-        <a class="nav-link" href="/auth/profile">{{name}}</a>
+
+        <a class="nav-link" href="/auth/profile">{{req.session.currentUser.name}}</a>
         <img src="/images/perfil.png" alt="pokebola" width="30" height="24" class="d-inline-block align-text-top">
-        {{/if}}
+
       </div>
     </div>
   </nav>

@@ -27,6 +27,10 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Pokemon",
     }],
+    review: [{
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    }],
     team: String,
     admin: Boolean,
   },

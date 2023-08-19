@@ -179,48 +179,39 @@ router.get("/buy/:pokemonId/:ownerId", isLoggedIn, (req, res, next) => {
     let idPokemon = req.params.pokemonId;
     let pokemon;
 
-    let dinero = req.session.currentUser.cash
-    if (dinero < 0) {
-        res.send("No tienes suficiente dinero para esta compra")
-    }
+    let dinero;
+    User.findById(req.session.currentUser)
+        .then((user) => {
+            dinero = user.cash
+            // console.log("dinerooooooo ======>>>  " + dinero)
+        })
 
     Pokemon.findById(idPokemon)
         .then((result) => {
             pokemon = result;
+            console.log("pokemon =============>>>>  " + result)
+            if (dinero < pokemon.price) {
+                return res.send("No tienes suficiente dinero para esta compra")
+            }
             return User.findById(idPropietario)
         }).then((userDueño) => {
-            console.log(" userDueño antes ========================" + userDueño);
-            // actualizo el dinero del dueño
+
             userDueño.cash = userDueño.cash + pokemon.price;
-
-            // quito el pokemon del array
             userDueño.pokemons = userDueño.pokemons.filter((pokemon) => { return pokemon._id != idPokemon });
-
-
-            console.log("userDueño despues ========================" + userDueño);
             return User.findByIdAndUpdate(idPropietario, { pokemons: userDueño.pokemons, cash: userDueño.cash }, { new: true })
-
-
         })
         .then((propietarioActualizado) => {
-            console.log("Propietario actualizado en BBDD: ", propietarioActualizado);
+            // console.log("Propietario actualizado en BBDD: ", propietarioActualizado);
             return User.findById(req.session.currentUser._id)
         })
         .then((buyer) => {
-            console.log("buyer =========>>" + buyer)
-            console.log("let pokemon =========>>" + pokemon)
-
-
             buyer.cash = buyer.cash - pokemon.price;
 
             buyer.pokemons.push(idPokemon);
-            console.log("buyer 2 =========>>" + buyer)
             return User.findByIdAndUpdate(buyer._id, { pokemons: buyer.pokemons, cash: buyer.cash }, { new: true })
                 .then((updatedBuyer) => {
-                    console.log(updatedBuyer);
-                    console.log("Current User antes de update:", req.session.currentUser)
                     req.session.currentUser.pokemons = updatedBuyer.pokemons;
-                    console.log("Current User después de update:", req.session.currentUser)
+
                     res.redirect("/auth/profile")
                 })
         })
@@ -239,7 +230,16 @@ router.get("/buy/:pokemonId/:ownerId", isLoggedIn, (req, res, next) => {
 
 
 router.get("/delete/:id", (req, res, next) => {
-    Pokemon.findByIdAndDelete
+    const pokemonId = req.params.id;
 
+    Pokemon.findByIdAndDelete(pokemonId)
+        .then(() => {
+            console.log("pokemon deletado con sucesso")
+            res.redirect("/auth/profile")
+        })
+        .catch((error) => {
+            console.error('Error al deletar el Pokémon:', error);
+
+        });
 })
 module.exports = router;
